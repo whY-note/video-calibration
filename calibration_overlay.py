@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
         "--image-path",
         type=str,
         # default="./correct/correct.jpg",
-        default="./correct/people.jpg",
+        default="./correct/sky.jpg",
         help="Path to reference image",
     )
     parser.add_argument(

@@ -38,6 +38,12 @@ Save calibration result to JSON when quit:
 python3 calibration_overlay.py --save-config --output-json calibration.json
 ```
 
+Capture photos into `./correct`:
+
+```bash
+python3 take_photos.py
+```
+
 ## 3. Controls
 
 - Mouse: drag the overlay image.
