@@ -10,7 +10,7 @@ This project provides a real-time calibration utility for object placement.
 ## 1. Install
 
 ```bash
-python3 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## 2. Run
@@ -18,7 +18,7 @@ python3 -m pip install -r requirements.txt
 Default camera and default image:
 
 ```bash
-python3 calibration_overlay.py
+python calibration_overlay.py
 ```
 
 Startup camera handling is automatic:
@@ -29,19 +29,25 @@ Startup camera handling is automatic:
 Choose external camera directly (optional, skip startup selection):
 
 ```bash
-python3 calibration_overlay.py --camera-index 1
+python calibration_overlay.py --camera-index 1
 ```
 
 Save calibration result to JSON when quit:
 
 ```bash
-python3 calibration_overlay.py --save-config --output-json calibration.json
+python calibration_overlay.py --save-config --output-json calibration.json
 ```
 
 Capture photos into `./correct`:
 
 ```bash
-python3 take_photos.py
+python take_photos.py
+```
+
+Specify which camera to use for taking photos.
+
+```bash
+python take_photos.py --camera-index 1
 ```
 
 ## 3. Controls
@@ -80,7 +86,7 @@ When `--save-config` is enabled, output JSON includes:
 ## 6. Troubleshooting
 
 - Camera cannot open:
-  - Check macOS camera permission for your terminal/IDE.
+  - Check camera permission for your terminal/IDE.
   - Try another camera index (`--camera-index 1`, `--camera-index 2`).
   - If your camera index is larger, increase startup scan range (`--scan-max-index 5`).
 - Image cannot load:
