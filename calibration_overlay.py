@@ -40,7 +40,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--image-path",
         type=str,
-        # default="./correct/correct.jpg",
         # default="./correct/blank.jpg",
         default="./correct/three_blocks.jpg",
         help="Path to reference image",
@@ -71,8 +70,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--scan-max-index",
         type=int,
-        default=2,
-        help="Max camera index to probe for startup selection (default: 2)",
+        default=32,
+        help="Max camera index to probe for startup selection (default: 32)",
     )
     return parser.parse_args()
 
@@ -92,7 +91,7 @@ def resize_overlay(base_overlay: np.ndarray, scale: float) -> np.ndarray:
     return cv2.resize(base_overlay, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
 
 
-def detect_cameras(max_index: int = 2) -> list[tuple[int, int, int]]:
+def detect_cameras(max_index: int = 32) -> list[tuple[int, int, int]]:
     cameras: list[tuple[int, int, int]] = []
     for idx in range(max_index + 1):
         cap = cv2.VideoCapture(idx)
@@ -139,7 +138,7 @@ def select_camera_interactively(cameras: list[tuple[int, int, int]]) -> int:
         )
         cv2.putText(
             canvas,
-            "Press Q to quit",
+            "Press ESC to quit",
             (24, 84),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.58,
@@ -165,7 +164,7 @@ def select_camera_interactively(cameras: list[tuple[int, int, int]]) -> int:
         cv2.imshow(CAMERA_SELECT_WINDOW, canvas)
         key = cv2.waitKeyEx(20)
 
-        if key in (ord("q"), ord("Q"), 27):
+        if key == 27:
             cv2.destroyWindow(CAMERA_SELECT_WINDOW)
             raise KeyboardInterrupt("Camera selection cancelled by user")
 
@@ -212,7 +211,7 @@ def draw_help_text(frame: np.ndarray, move_step: int) -> None:
         f"Keyboard: arrows/WASD move ({move_step}px)",
         "[-]/[=]: decrease/increase step",
         "[/]: scale down/up overlay",
-        "Q: quit",
+        "ESC: quit",
     ]
     y = 24
     for text in lines:
@@ -342,7 +341,8 @@ def main() -> None:
             cv2.imshow(WINDOW_NAME, combined)
 
             key = cv2.waitKeyEx(1)
-            if key in (ord("q"), ord("Q")):
+            if key == 27:
+                # 按 ESC 键退出
                 break
 
             if key in (81, 2424832, ord("a"), ord("A")):
